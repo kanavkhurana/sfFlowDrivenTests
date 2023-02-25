@@ -1,0 +1,26 @@
+@isTest
+public class AccountHandlerTest{
+
+public static testmethod void testUpdateAccountDescription(){
+
+    Test.startTest();
+    
+    Map<String, Object> myMap = new Map<String, Object>();
+    Flow.Interview.AUTO_LAUNCHED_AccountHandlerTest_Flow myFlow = 
+    new Flow.Interview.AUTO_LAUNCHED_AccountHandlerTest_Flow(myMap);
+    
+    myFlow.start();
+    
+    Test.stopTest();
+    
+    System.assert((Boolean)myFlow.getVariableValue('testPass'));
+  
+}
+
+}
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+public class AccountHandler{
+
+@InvocableMethod(label='Update Account Description' description='Updates the description of all accounts within the same State' category='Account')
+public static void updateAccountDescription(List<AccountHandlerRequest> requestList){
+Map<String, String> stateDescriptionMap = new Map<String, String>();
+
+for(AccountHandlerRequest request: requestList){
+ stateDescriptionMap.put(request.stateName, request.description);
+}
+
+System.debug('stateDescriptionMap: ' + stateDescriptionMap);
+System.debug('stateDescriptionMap keyset: ' + stateDescriptionMap.keySet());
+
+
+// Query all accounts with a billing address in California
+List<Account> accounts = [SELECT Id, Description, BillingState FROM Account WHERE BillingState IN: stateDescriptionMap.keySet()];
+
+// Update the Account description for each account
+for (Account acc : accounts) {
+acc.Description =  stateDescriptionMap.get(acc.BillingState);
+}
+
+// Save the updated accounts
+try {
+update accounts;
+} catch (DmlException e) {
+// Handle exception
+}
+}
+
+public class AccountHandlerRequest {
+    @InvocableVariable(required=true)
+    public String stateName;
+
+    @InvocableVariable(required=true)
+    public String description;
+
+  }
+  
+}
